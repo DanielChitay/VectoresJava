@@ -157,23 +157,35 @@ class ArrMat {
     }
 }
 
+
 class OrdFrec {
-    public static String Ordenar(int[] frecuencias) {
-        Map<Integer, Integer> freqMap = new HashMap<>();
-        for (int num : frecuencias) {
-            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+    public static String Ordenar(int[] nums) {
+        int n = nums.length;
+        int[][] pares = new int[n][2];
+
+
+        for (int i = 0; i < n; i++) {
+            pares[i][0] = nums[i];
+            pares[i][1] = contarFrecuencia(nums, nums[i]);
         }
 
-        List<Integer> list = new ArrayList<>();
-        for (int num : frecuencias) {
-            list.add(num);
+        Arrays.sort(pares, (a, b) -> b[1] == a[1] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
+
+
+        int[] resultado = new int[n];
+        for (int i = 0; i < n; i++) {
+            resultado[i] = pares[i][0];
         }
 
-        list.sort((a, b) -> {
-            int freqComp = freqMap.get(a) - freqMap.get(b);
-            return freqComp == 0 ? Integer.compare(a, b) : freqComp;
-        });
+        return Arrays.toString(resultado);
+    }
 
-        return list.toString();
+
+    private static int contarFrecuencia(int[] nums, int num) {
+        int count = 0;
+        for (int n : nums) {
+            if (n == num) count++;
+        }
+        return count;
     }
 }
